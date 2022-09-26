@@ -69,8 +69,8 @@ function edit(req,res) {
   Flight.findById(req.params.id)
   .then(flight => {
     const dt = flight.departs
-
-  const departsDate = dt.toISOString().slice(0,16)
+    const departsDate = dt.toISOString().slice(0,16)
+    
     res.render('flights/edit', {
       title:'Edit Flight',
       flight:flight,
