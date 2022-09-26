@@ -1,11 +1,14 @@
 import { Flight } from "../models/flight.js"
 
 function index(req, res) {
+  const today = new Date()
+
   Flight.find({})
   .then(flights => {
     res.render('flights/index', {
       title: 'All Flights',
       flights: flights,
+      isPast: flights.departs < today,
     })
   })
   .catch(error => {
@@ -28,13 +31,16 @@ function newFlight(req,res){
 
 
 function create(req,res){
+  for(let key in req.body){
+    if(req.body[key] === '') delete req.body[key]
+  }
   Flight.create(req.body)
   .then(flight => {
     res.redirect('/flights')
   })
   .catch(error => {
     console.log(error)
-    res.redirect('/flights')
+    res.redirect('/flights/new')
   })
 }
 
@@ -70,7 +76,7 @@ function edit(req,res) {
   .then(flight => {
     const dt = flight.departs
     const departsDate = dt.toISOString().slice(0,16)
-    
+
     res.render('flights/edit', {
       title:'Edit Flight',
       flight:flight,
@@ -85,13 +91,16 @@ function edit(req,res) {
 
 
 function update(req,res) {
-  Flight.findByIdAndUpdate(req.params.id, req.body)
+  for(let key in req.body){
+    if(req.body[key] === '') delete req.body[key]
+  }
+  Flight.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(flight => {
     res.redirect(`/flights/${flight._id}`)
   })
   .catch(error => {
     console.log(error)
-    res.redirect('/flights')
+    res.redirect('/flights/')
   })
 }
 
