@@ -3,7 +3,7 @@ import { Flight } from "../models/flight.js"
 function index(req, res) {
   const today = new Date()
 
-  Flight.find({})
+  Flight.find({}).sort({ departs : 1})
   .then(flights => {
     res.render('flights/index', {
       title: 'All Flights',
