@@ -20,7 +20,6 @@ function newFlight(req,res){
   const dt = flightNew.departs
 
   const departsDate = dt.toISOString().slice(0,16)
-  console.log(departsDate)
   res.render('flights/new', {
     title: 'Add Flight',
     departsDate
@@ -69,9 +68,13 @@ function deleteFlight(req,res) {
 function edit(req,res) {
   Flight.findById(req.params.id)
   .then(flight => {
+    const dt = flight.departs
+
+  const departsDate = dt.toISOString().slice(0,16)
     res.render('flights/edit', {
       title:'Edit Flight',
-      flight:flight
+      flight:flight,
+      departsDate: departsDate
     })
   })
   .catch(error => {
