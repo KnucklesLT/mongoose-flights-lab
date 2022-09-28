@@ -15,6 +15,8 @@ router.get('/:id/edit', flightCtrl.edit)
 /* Post listing. */
 router.post('/', flightCtrl.create)
 
+router.post('/:id/meals', flightCtrl.addToMeals)
+
 router.post('/:id/tickets', flightCtrl.createTicket)
 
 
