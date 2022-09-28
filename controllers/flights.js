@@ -9,7 +9,6 @@ function index(req, res) {
     res.render('flights/index', {
       title: 'All Flights',
       flights: flights,
-      isPast: flights.departs < today,
     })
   })
   .catch(error => {
@@ -165,6 +164,26 @@ function addToMeals(req,res) {
   })
 }
 
+
+function deleteMeal(req,res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.meals.remove(req.params.mealid)
+    flight.save()
+    .then(() => {
+      res.redirect(`/flights/${flight._id}`)
+    })
+    .catch(error => {
+      console.log(error)
+      res.redirect(`/flights/`)
+    })
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect(`/flights/`)
+  })
+}
+
 export {
   index,
   newFlight as new,
@@ -176,4 +195,5 @@ export {
   createTicket,
   deleteTicket,
   addToMeals,
+  deleteMeal,
 }
